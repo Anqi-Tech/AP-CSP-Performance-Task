@@ -1,9 +1,18 @@
 <template>
   <div>
-    <router-link to="/mainpage">hi</router-link>
-    <router-view/>
+    <FirstComp/>
   </div>
 </template>
+
+<script>
+import FirstComp from '@/components/FirstComp.vue'
+
+export default {
+  components: {
+      FirstComp
+  },
+}
+</script>
 
 <style lang="scss">
 
