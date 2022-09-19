@@ -1,7 +1,8 @@
 <template>
     <div>
-        <div v-for="die in dice" :key="die.id" class="dice" @click="selectDice">
+        <div v-for="(die, index) in dice" :key="die.id" class="dice" @click="selectDice">
             <p>{{die.number}}</p>
+            <p class="hide">{{index}}</p>
         </div>
         <h1 @click="selectSkill1">Deal [number] x 10 damage</h1>
         <h1 @click="selectSkill2">Heal [number] x 5 health</h1>
@@ -25,7 +26,7 @@ export default {
         const targetDice = e.target
         this.diceNumber = targetDice.innerText
         this.diceSelected = true
-        console.log(this.diceNumber)
+        console.log(targetDice.lastElementChild.innerHTML)
     },
     selectSkill1() {
       if (this.diceSelected == true) {
@@ -56,8 +57,12 @@ export default {
     justify-content: center;
 }
 
+.hide {
+  display: none;
+}
+
 p {
-    margin: 0;
+  margin: 0;
 }
 
 </style>
