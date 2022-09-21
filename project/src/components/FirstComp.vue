@@ -1,22 +1,22 @@
 <template>
-    <div>
+    <div class="game">
       <div class="game-field">
-        <div>
-          <h1>Hi: {{playerHealth}}</h1>
+        <div class="column">
+          <h1>You: {{playerHealth}}</h1>
         </div>
-        <div>
+        <div class="column">
           <h1 @click="selectSkill1">Deal [number] x 10 damage</h1>
           <h1 @click="selectSkill2">Heal [number] x 5 health</h1>
         </div>
-        <div>
-          <h1>Bye: {{enemyHealth}}</h1>
+        <div class="column">
+          <h1>Your Worst Enemy: {{enemyHealth}}</h1>
         </div>
       </div>
       <div class="game-dice">
-        <div v-for="(die, index) in dice" :key="die.id" class="dice" @click="selectDice">
-            <p>{{die.number}}</p>
-            <p class="hide">{{index}}</p>
-        </div>
+        <button v-for="(die, index) in dice" :key="die.id" class="dice" @click="selectDice">
+          <p>{{die.number}}</p>
+          <p class="hide">{{index}}</p>
+        </button>
       </div>
     </div>
 </template>
@@ -39,10 +39,11 @@ export default {
   },
   methods: {
     selectDice(e) {
-      if (e.target.tagName == 'DIV') {
+      if (e.target.tagName == 'BUTTON') {
         this.targetedDice = e.target
       } else {
         this.targetedDice = e.target.parentElement
+        console.log(e.target.parentElement.tagName)
       }
         this.diceNumber = this.targetedDice.innerText
         this.indexNumber = this.targetedDice.lastElementChild.innerHTML
@@ -91,24 +92,46 @@ export default {
 </script>
 
 <style scoped>
+.game {
+  margin: 5rem;
+}
+
 .game-field {
   display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.column {
+  width: 30vw;
+  text-align: center;
 }
 
 .game-dice {
   display: flex;
+  width: 30vw;
+  justify-content: center;
 }
 
 .dice {
-    background: red;
-    width: 5vw;
-    aspect-ratio: 1 / 1;
-    font-size: 2rem;
-    text-align: center;
-    margin: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  border: 0.3rem solid black;
+  border-radius: 20px;
+  width: 5vw;
+  aspect-ratio: 1 / 1;
+  font-size: 2rem;
+  text-align: center;
+  margin: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dice:hover {
+  background: rgb(197, 197, 197);
+}
+
+.dice:focus {
+  border: 0.3rem solid blue;
 }
 
 .hide {
