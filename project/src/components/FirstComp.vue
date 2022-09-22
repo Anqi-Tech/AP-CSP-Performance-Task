@@ -1,16 +1,16 @@
 <template>
     <div class="game">
-      <div>
+      <div v-if="playing">
         <div class="game-field">
           <div class="column">
             <h1>You: {{playerHealth}}</h1>
           </div>
           <div class="column">
-            <h1 @click="selectSkill1">Deal [number] x 10 damage</h1>
-            <h1 @click="selectSkill2">Heal [number] x 5 health</h1>
+            <h1 @click="selectSkill1" class="skill">Deal [number] x 10 damage</h1>
+            <h1 @click="selectSkill2" class="skill">Heal [number] x 5 health</h1>
           </div>
           <div class="column">
-            <h1>Your Worst Enemy: {{enemyHealth}}</h1>
+            <h1>Opponent: {{enemyHealth}}</h1>
           </div>
         </div>
         <div class="game-dice">
@@ -20,8 +20,10 @@
           </button>
         </div>
       </div>
-      <div>
-        <!-- <h1>You win</h1> -->
+      <div v-else class="end-screen">
+        <h1 v-if="won" class="result">You win!</h1>
+        <h1 v-else class="result">You lose!</h1>
+        <button @click="restartGame" class="retry">Retry</button>
       </div>
     </div>
 </template>
@@ -39,7 +41,9 @@ export default {
       damageNumber: null,
       healNumber: null,
       playerHealth: 100,
-      enemyHealth: 500,
+      enemyHealth: 400,
+      playing: true,
+      won: null,
     }
   },
   methods: {
@@ -77,6 +81,11 @@ export default {
           this.dice.push({number: randomNumber})
         }        
       }
+    },
+    restartGame() {
+      this.playing = true
+      this.playerHealth = 100
+      this.enemyHealth = 300
     }
   },
   mounted() {
@@ -94,6 +103,13 @@ export default {
         let randomNumber = Math.floor(Math.random()*6)+1
         this.dice.push({number: randomNumber})
       }
+    }
+    if (this.enemyHealth <= 0) {
+      this.playing = false
+      this.won = true
+    } else if (this.playerHealth <= 0) {
+      this.playing = false
+      this.won = false
     }
   }
 }
@@ -116,6 +132,16 @@ export default {
   flex-direction: column;
   text-align: center;
   justify-content: center;
+}
+
+.skill {
+  border: 0.3rem solid black;
+  border-radius: 20px;
+  padding: 1rem;
+}
+
+.skill:hover {
+  background: rgb(197, 197, 197); 
 }
 
 .game-dice {
@@ -143,6 +169,29 @@ export default {
 
 .dice:focus {
   border: 0.3rem solid blue;
+}
+
+.end-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.result {
+  font-size: 5rem;
+  text-align: center;
+}
+
+.retry {
+  border: 0.3rem solid black;
+  border-radius: 20px;
+  width: 20vw;
+  font-size: 2rem;
+  padding: 1rem;
+}
+
+.retry:hover {
+  background: rgb(197, 197, 197);
 }
 
 .hide {
