@@ -1,22 +1,27 @@
 <template>
     <div class="game">
-      <div class="game-field">
-        <div class="column">
-          <h1>You: {{playerHealth}}</h1>
+      <div>
+        <div class="game-field">
+          <div class="column">
+            <h1>You: {{playerHealth}}</h1>
+          </div>
+          <div class="column">
+            <h1 @click="selectSkill1">Deal [number] x 10 damage</h1>
+            <h1 @click="selectSkill2">Heal [number] x 5 health</h1>
+          </div>
+          <div class="column">
+            <h1>Your Worst Enemy: {{enemyHealth}}</h1>
+          </div>
         </div>
-        <div class="column">
-          <h1 @click="selectSkill1">Deal [number] x 10 damage</h1>
-          <h1 @click="selectSkill2">Heal [number] x 5 health</h1>
-        </div>
-        <div class="column">
-          <h1>Your Worst Enemy: {{enemyHealth}}</h1>
+        <div class="game-dice">
+          <button v-for="(die, index) in dice" :key="die.id" class="dice" @click="selectDice">
+            <p>{{die.number}}</p>
+            <p class="hide">{{index}}</p>
+          </button>
         </div>
       </div>
-      <div class="game-dice">
-        <button v-for="(die, index) in dice" :key="die.id" class="dice" @click="selectDice">
-          <p>{{die.number}}</p>
-          <p class="hide">{{index}}</p>
-        </button>
+      <div>
+        <!-- <h1>You win</h1> -->
       </div>
     </div>
 </template>
@@ -34,7 +39,7 @@ export default {
       damageNumber: null,
       healNumber: null,
       playerHealth: 100,
-      enemyHealth: 1000,
+      enemyHealth: 500,
     }
   },
   methods: {
@@ -81,7 +86,10 @@ export default {
     }
   },
   updated() {
-    if (this.dice.length == 0) {
+    if (this.dice.length == 2) {
+      this.dice.length = 0
+      let takenDamage = Math.floor(Math.random()*30)+10
+      this.playerHealth = this.playerHealth - takenDamage
       for (let i = 0; i < 4; i++) {
         let randomNumber = Math.floor(Math.random()*6)+1
         this.dice.push({number: randomNumber})
@@ -104,7 +112,10 @@ export default {
 
 .column {
   width: 30vw;
+  display: flex;
+  flex-direction: column;
   text-align: center;
+  justify-content: center;
 }
 
 .game-dice {
