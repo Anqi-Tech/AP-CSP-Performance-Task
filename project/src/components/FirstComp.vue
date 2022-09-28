@@ -52,7 +52,6 @@ export default {
         this.targetedDice = e.target
       } else {
         this.targetedDice = e.target.parentElement
-        console.log(e.target.parentElement.tagName)
       }
         this.diceNumber = this.targetedDice.innerText
         this.indexNumber = this.targetedDice.lastElementChild.innerHTML
