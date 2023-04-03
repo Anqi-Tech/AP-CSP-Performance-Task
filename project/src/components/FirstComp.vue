@@ -48,16 +48,19 @@ export default {
   },
   methods: {
     selectDice(e) {
+      //make sure die button is selected
       if (e.target.tagName == 'BUTTON') {
         this.targetedDice = e.target
       } else {
         this.targetedDice = e.target.parentElement
       }
+      //record number displayed on die, die index number
         this.diceNumber = this.targetedDice.innerText
         this.indexNumber = this.targetedDice.lastElementChild.innerHTML
         this.diceSelected = true
     },
     selectSkill1() {
+      //dice number is multiplied by 10, deducted from opponent, and die is removed from dice array
       if (this.diceSelected == true) {
         const usedDice = this.dice[this.indexNumber]
         this.dice = this.dice.filter((d) => d !== usedDice)
@@ -66,6 +69,7 @@ export default {
       }
     },
     selectSkill2() {
+      //dice number is multiplied by 5, added to user, and die is removed from array
       if (this.diceSelected == true) {
         const usedDice = this.dice[this.indexNumber]
         this.dice = this.dice.filter((d) => d !== usedDice)
@@ -73,39 +77,38 @@ export default {
         this.playerHealth = this.playerHealth + this.healNumber
       }
     },
-    reloadDice() {
-      if (this.dice.length === 0) {
-        for (let i = 0; i < 4; i++) {
-          let randomNumber = Math.floor(Math.random()*6)+1
-          this.dice.push({number: randomNumber})
-        }        
-      }
-    },
     restartGame() {
+      //reset everything
       this.playing = true
       this.playerHealth = 100
       this.enemyHealth = 300
     }
   },
   mounted() {
+    //generates 4 random dice upon first entering the site
     for (let i = 0; i < 4; i++) {
     let randomNumber = Math.floor(Math.random()*6)+1
     this.dice.push({number: randomNumber})
     }
   },
   updated() {
+    //when only 2 dice are left, they are removed
     if (this.dice.length == 2) {
       this.dice.length = 0
+      //player takes a random amount of damage between 30-40
       let takenDamage = Math.floor(Math.random()*30)+10
       this.playerHealth = this.playerHealth - takenDamage
+      //generates 4 new dice
       for (let i = 0; i < 4; i++) {
         let randomNumber = Math.floor(Math.random()*6)+1
         this.dice.push({number: randomNumber})
       }
     }
+    //if opponent health reaches 0, display win screen and retry button
     if (this.enemyHealth <= 0) {
       this.playing = false
       this.won = true
+      //if player health reaches 0, display lose screen and retry button
     } else if (this.playerHealth <= 0) {
       this.playing = false
       this.won = false
